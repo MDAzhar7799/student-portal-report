@@ -56,7 +56,16 @@ class Config:
     # ----------------------------
     # CORS Settings
     # ----------------------------
-    CORS_ORIGINS = ["http://localhost:5173", "http://localhost:3000"]
+    CORS_ORIGINS = [
+        "http://localhost:5173",
+        "http://localhost:3000",
+        # Vercel deployed frontend URLs
+        "https://frontend-mu-teal-82.vercel.app",
+        "https://student-portal-report.vercel.app",
+        "https://frontend-lo87yxmz2-mdazhar7799s-projects.vercel.app",
+        # Allow all vercel.app subdomains
+        "https://*.vercel.app",
+    ]
 
     # ----------------------------
     # Gemini AI Configuration

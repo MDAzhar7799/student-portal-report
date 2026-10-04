@@ -19,9 +19,16 @@ from utils.auth import token_required
 from datetime import datetime
 from bson import ObjectId
 
-# Import OCR modules
+# Import OCR modules (optional — may not be available in serverless environments)
 import sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'ocr'))
+
+try:
+    import cv2
+    import pytesseract
+    OCR_AVAILABLE = True
+except ImportError:
+    OCR_AVAILABLE = False
 
 ocr_bp = Blueprint("ocr", __name__)
 
