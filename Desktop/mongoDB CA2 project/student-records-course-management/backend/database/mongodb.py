@@ -27,11 +27,24 @@ def get_client():
     """
     Returns singleton PyMongo MongoClient.
     PyMongo is the official Python driver for MongoDB.
+    Supports both local MongoDB and MongoDB Atlas (cloud).
     """
     global _client
     if _client is None:
         mongo_uri = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
-        _client = MongoClient(mongo_uri, serverSelectionTimeoutMS=5000)
+        # Atlas URIs use mongodb+srv:// and need TLS
+        if "mongodb+srv://" in mongo_uri or "mongodb.net" in mongo_uri:
+            import ssl
+            _client = MongoClient(
+                mongo_uri,
+                serverSelectionTimeoutMS=10000,
+                connectTimeoutMS=10000,
+                socketTimeoutMS=10000,
+                tls=True,
+                tlsAllowInvalidCertificates=True,
+            )
+        else:
+            _client = MongoClient(mongo_uri, serverSelectionTimeoutMS=5000)
     return _client
 
 
